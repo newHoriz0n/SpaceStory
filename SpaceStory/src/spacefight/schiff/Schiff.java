@@ -1,6 +1,7 @@
 package spacefight.schiff;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import spacefight.Traeger;
@@ -8,37 +9,76 @@ import topview.pbLib.Koordinate3D;
 
 public class Schiff extends Traeger {
 
+	private boolean autoPilot;
 	private double zielAusrichtung;
+	private double lenkRichtung;
+
 	private String bezeichnung;
 	private double wendigkeit;
 
 	private double rotSpeed; // rad pro Sekunde
 
-	public Schiff(Koordinate3D position, String bezeichnung, double radius, double wendigkeit, double huelle,
-			double masse, List<SystemBucht> buchten, Color teamFarbe) {
+	private List<Laser> lasers;
+
+	public Schiff(Koordinate3D position, String bezeichnung, double radius, double huelle, double masse, List<SystemBucht> buchten, Color teamFarbe) {
 		super(position, radius, buchten, huelle, masse, Color.GRAY, teamFarbe);
 
 		this.bezeichnung = bezeichnung;
-		this.wendigkeit = wendigkeit;
 		this.zielAusrichtung = 2.0;
+
+		this.autoPilot = false;
+		this.lenkRichtung = 0;
+
+		calcWendigkeit();
+
+		ladeWaffen();
+
+	}
+
+	private void ladeWaffen() {
+
+		this.lasers = new ArrayList<>();
+
+		for (SystemBucht s : systemBuchten) {
+			if (s.getSystemTyp().equals(ESystemTyp.Laser)) {
+				lasers.add((Laser) s);
+			}
+		}
+
 	}
 
 	@Override
 	public void update(long frameDauer) {
-		lenken(frameDauer);
+
+		calcAusrichtung(frameDauer);
 		super.update(frameDauer);
 	}
 
 	/**
 	 * 
-	 * @param richtung in rad
+	 * @param richtung
+	 *            in rad
 	 */
 	public void setZielAusrichtung(double richtung) {
 		this.zielAusrichtung = richtung;
 	}
 
+	public void steuern(double richtung) {
+		this.lenkRichtung = richtung;
+	}
+
 	public void calcWendigkeit() {
-		// TODO: calcWendigkeit abhaengig von Schiffsteuersystemen
+
+		double aktWend = 0;
+
+		for (SystemBucht s : systemBuchten) {
+			if (s.getSystemTyp().equals(ESystemTyp.Steuerung)) {
+				aktWend += ((Steuerung) s).getSteuerKraft();
+			}
+		}
+
+		wendigkeit = aktWend;
+
 	}
 
 	public void beschleunigen() {
@@ -51,26 +91,52 @@ public class Schiff extends Traeger {
 
 	/**
 	 * 
-	 * @param richtung: Genordete Richtung zur Zielausrichtung
+	 * @param richtung:
+	 *            Genordete Richtung zur Zielausrichtung
 	 */
-	public void lenken(long frameDauer) {
+	private void calcAusrichtung(long frameDauer) {
 
 		double zeitAnteil = frameDauer / 1000.0;
-		double differenz = zielAusrichtung - ausrichtung;
 		double wahreWendigkeit = wendigkeit / masse;
 
-		// Ist
-		if (Math.abs(differenz) < rotSpeed * zeitAnteil && rotSpeed < wendigkeit) {
-			rotSpeed = 0;
-			ausrichtung = zielAusrichtung;
-		} else {
-			if (Math.abs(differenz) - (0 * wendigkeit * zeitAnteil) > ((rotSpeed * rotSpeed) / (2 * wahreWendigkeit))) {
-				rotSpeed += wahreWendigkeit * zeitAnteil * Math.signum(differenz);
+		if (autoPilot) {
+			double differenz = zielAusrichtung - ausrichtung;
+			if (Math.abs(differenz) < rotSpeed * zeitAnteil && rotSpeed < wendigkeit) {
+				rotSpeed = 0;
+				ausrichtung = zielAusrichtung;
 			} else {
-				rotSpeed -= wahreWendigkeit * zeitAnteil * Math.signum(differenz);
+				if (Math.abs(differenz) - (0 * wendigkeit * zeitAnteil) > ((rotSpeed * rotSpeed) / (2 * wahreWendigkeit))) {
+					rotSpeed += wahreWendigkeit * zeitAnteil * Math.signum(differenz);
+				} else {
+					rotSpeed -= wahreWendigkeit * zeitAnteil * Math.signum(differenz);
+				}
+			}
+		} else {
+			if (lenkRichtung != 0) {
+				rotSpeed += wahreWendigkeit * zeitAnteil * Math.signum(lenkRichtung);
+			} else {
+				if (Math.abs(rotSpeed) > wahreWendigkeit * zeitAnteil) {
+					if (rotSpeed > 0) {
+						rotSpeed -= wahreWendigkeit * zeitAnteil;
+					} else {
+						rotSpeed += wahreWendigkeit * zeitAnteil;
+					}
+				} else {
+					rotSpeed = 0;
+				}
 			}
 		}
 		ausrichtung += rotSpeed * zeitAnteil;
 
+	}
+
+	public void schiesseAufPosition(int x, int y) {
+		for (Laser l : lasers) {
+			l.schiesseAufPosition(x, y);
+		}
+	}
+
+	public List<Laser> getLaser() {
+		return lasers;
 	}
 }

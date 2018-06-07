@@ -5,20 +5,41 @@ import java.awt.Graphics2D;
 
 import topview.pbLib.Koordinate3D;
 
-public class Schuss extends Koerper{
+public class Schuss extends Koerper {
 
 	private double energie;
 	private long startZeit;
 	private long lebensZeit;
 
-	public Schuss(double masse, double radius, Koordinate3D position, Color farbe) {
-		super(masse, radius, position, farbe);
-		// TODO Auto-generated constructor stub
+	public Schuss(double energie, double radius, Koordinate3D startPosition, Koordinate3D speed, Color farbe) {
+		super(0, radius, startPosition, farbe);
+
+		this.energie = energie;
+		this.lebensZeit = 1500;
+		this.startZeit = System.currentTimeMillis();
+
+		setSpeed(speed);
 	}
-	
+
+	public Schuss(Schuss schuss) {
+		super(0, schuss.radius, schuss.position, schuss.farbe);
+		this.energie = schuss.energie;
+		this.startZeit = schuss.startZeit;
+		this.lebensZeit = schuss.lebensZeit;
+		setSpeed(schuss.speed);
+	}
+
+	public boolean fliegt() {
+		return System.currentTimeMillis() - startZeit < lebensZeit;
+	}
+
+	public double getEnergie() {
+		return energie;
+	}
+
 	@Override
 	public void draw(Graphics2D g2d) {
-		// TODO Auto-generated method stub
-		
+		g2d.setColor(farbe);
+		g2d.fillOval((int) (position.getIntX() - radius), (int) (position.getIntY() - radius), (int) (2 * radius), (int) (2 * radius));
 	}
 }

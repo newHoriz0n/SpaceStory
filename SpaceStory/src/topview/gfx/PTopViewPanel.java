@@ -57,7 +57,7 @@ public class PTopViewPanel extends JPanel {
 		if (!mouseControlSet) {
 			this.centerX = (int) (getWidth() * relCenterX);
 			this.centerY = (int) (getHeight() * relCenterY);
-			TVMouseControl tvmc = new TVMouseControl(tvg, getWidth(), getHeight(), centerX, centerY);
+			TVMouseControl tvmc = new TVMouseControl(tvg, centerX, centerY);
 			addMouseMotionListener(tvmc);
 			addMouseListener(tvmc);
 			addMouseWheelListener(tvmc);

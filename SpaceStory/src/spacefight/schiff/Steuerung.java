@@ -8,7 +8,7 @@ public class Steuerung extends SystemBucht {
 	}
 
 	public double getSteuerKraft() {
-		return Math.pow(2, aktStufe);
+		return Math.pow(1.5, aktStufe);
 	}
 
 }

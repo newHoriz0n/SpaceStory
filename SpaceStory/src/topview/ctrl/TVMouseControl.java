@@ -19,9 +19,6 @@ public class TVMouseControl implements MouseMotionListener, MouseListener, Mouse
 	private long rechteDrueckzeit;
 	private long linkeDrueckzeit;
 
-	private int panelWidth;
-	private int panelHeight;
-
 	private int centerX;
 	private int centerY;
 
@@ -32,10 +29,8 @@ public class TVMouseControl implements MouseMotionListener, MouseListener, Mouse
 
 	private long lastDragPosTime;
 
-	public TVMouseControl(TopViewGame tvg, int panelWidth, int panelHeight, int centerX, int centerY) {
+	public TVMouseControl(TopViewGame tvg, int centerX, int centerY) {
 		this.tvg = tvg;
-		this.panelHeight = panelHeight;
-		this.panelWidth = panelWidth;
 		this.centerX = centerX;
 		this.centerY = centerY;
 		this.dragXs = new ArrayList<>();
@@ -44,8 +39,8 @@ public class TVMouseControl implements MouseMotionListener, MouseListener, Mouse
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		int posX = e.getX() - panelWidth / 2;
-		int posY = e.getY() - panelHeight / 2;
+		int posX = e.getX() - centerX;
+		int posY = e.getY() - centerY;
 		double dist = Double.MAX_VALUE;
 		if (dragXs.size() > 0) {
 			dist = Koordinate3D.getDistance(posX, posY, dragXs.get(dragXs.size() - 1), dragYs.get(dragYs.size() - 1));

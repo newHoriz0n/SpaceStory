@@ -8,8 +8,6 @@ public abstract class TopViewGame {
 
 	@SuppressWarnings("unused")
 	private double mausRichtung;
-	@SuppressWarnings("unused")
-	private boolean[] keys;
 	
 	protected double spielerX;
 	protected double spielerY;
@@ -18,7 +16,6 @@ public abstract class TopViewGame {
 	
 	public TopViewGame() {
 		this.mausRichtung = 0;
-		this.keys = new boolean[256];	
 	}
 	
 	
@@ -88,11 +85,9 @@ public abstract class TopViewGame {
 		this.mausRichtung = richtung;
 	}
 
-	public void handleKeyInputs(boolean[] keys) {
-		this.keys = keys;
-	}
+	public abstract void handleKeyInputs(boolean[] keys);
 
-	public abstract void handleMouseRelease(List<Integer> dragXs, List<Integer> dragYs, int i, long linkeDrueckzeit);
+	public abstract void handleMouseRelease(List<Integer> dragXs, List<Integer> dragYs, int taste, long linkeDrueckzeit);
 
 	public abstract void handleMouseWheelAktion(int i);
 

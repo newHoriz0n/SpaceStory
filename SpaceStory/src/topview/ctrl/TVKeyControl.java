@@ -20,6 +20,7 @@ public class TVKeyControl implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
+//		System.out.println(arg0.getKeyCode());
 		if (arg0.getKeyCode() < keys.length) {
 			keys[arg0.getKeyCode()] = true;
 		}

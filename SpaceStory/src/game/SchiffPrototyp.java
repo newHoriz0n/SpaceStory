@@ -9,16 +9,14 @@ public class SchiffPrototyp {
 	private String bezeichnung;
 	private List<SystemBucht> buchten;
 	private double masse;
-	private double wendigkeit;
 	private double radius;
 	private double huelle;
 	
-	public SchiffPrototyp(String bezeichnung, List<SystemBucht> buchten, double masse, double wendigkeit, double radius, double huelle) {
+	public SchiffPrototyp(String bezeichnung, List<SystemBucht> buchten, double masse, double radius, double huelle) {
 		super();
 		this.bezeichnung = bezeichnung;
 		this.buchten = buchten;
 		this.masse = masse;
-		this.wendigkeit = wendigkeit;
 		this.radius = radius;
 		this.huelle = huelle;
 	}
@@ -42,11 +40,6 @@ public class SchiffPrototyp {
 	public double getRadius() {
 		return radius;
 	}
-	
-	public double getWendigkeit() {
-		return wendigkeit;
-	}
-	
 	
 	
 }

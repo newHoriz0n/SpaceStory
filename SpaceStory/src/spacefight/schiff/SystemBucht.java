@@ -8,12 +8,12 @@ import spacefight.Zerstoerbares;
 
 public class SystemBucht implements Zerstoerbares {
 
-	private Traeger traeger;
+	protected Traeger traeger;
 
 	private ESystemTyp systemTyp;
 	protected int aktStufe;
 	protected int maxStufe;
-	private double relPosition; // in rad relativ zum Traeger
+	protected double relPosition; // in rad relativ zum Traeger
 
 	private double aktHuelle;
 	private double maxHuelle;
@@ -78,6 +78,14 @@ public class SystemBucht implements Zerstoerbares {
 			g2d.setColor(traeger.getTeamFarbe());
 			g2d.fillOval(absPosX - maxRadius + 2, absPosY - maxRadius + 2, (maxRadius - 2) * 2, (maxRadius - 2) * 2);
 		}
+	}
+
+	public ESystemTyp getSystemTyp() {
+		return systemTyp;
+	}
+
+	public int getStufe() {
+		return aktStufe;
 	}
 
 }

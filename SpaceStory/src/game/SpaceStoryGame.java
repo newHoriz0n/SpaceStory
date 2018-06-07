@@ -3,6 +3,7 @@ package game;
 import java.awt.Graphics2D;
 import java.util.List;
 
+import spacefight.schiff.Schiff;
 import topview.exe.TVExe;
 import topview.game.TopViewGame;
 
@@ -10,10 +11,15 @@ public class SpaceStoryGame extends TopViewGame {
 
 	private Welt welt;
 
+	private Spieler spieler;
+
 	public SpaceStoryGame() {
 
 		super();
 		this.welt = new Welt();
+
+		this.spieler = new Spieler();
+		this.spieler.setSchiff((Schiff) welt.getSpieler());
 
 		startGame();
 	}
@@ -47,8 +53,10 @@ public class SpaceStoryGame extends TopViewGame {
 	}
 
 	@Override
-	public void handleMouseRelease(List<Integer> dragXs, List<Integer> dragYs, int i, long linkeDrueckzeit) {
+	public void handleMouseRelease(List<Integer> dragXs, List<Integer> dragYs, int taste, long linkeDrueckzeit) {
 		// TODO Auto-generated method stub
+
+		spieler.schussAufZielPosition(dragXs.get(dragXs.size() - 1), dragYs.get(dragYs.size() - 1));
 
 	}
 
@@ -60,8 +68,33 @@ public class SpaceStoryGame extends TopViewGame {
 
 	@Override
 	public void setSpielerPosition() {
-		spielerX = welt.getSpieler().getPosition().getX();
-		spielerY = welt.getSpieler().getPosition().getY();
+		spielerX = spieler.getSpielerPosition().getX();
+		spielerY = spieler.getSpielerPosition().getY();
+	}
+
+	@Override
+	public void handleKeyInputs(boolean[] keys) {
+		if (keys[87]) {
+			// vorwärts
+
+		} else if (keys[83]) {
+			// rückwärts
+		} else {
+			// stoppen
+
+		}
+
+		if (keys[65]) {
+			// links
+			spieler.setLenkrichtung(1);
+		} else if (keys[68]) {
+			// rechts
+			spieler.setLenkrichtung(-1);
+		} else {
+			// geradeaus
+			spieler.setLenkrichtung(0);
+		}
+
 	}
 
 }
