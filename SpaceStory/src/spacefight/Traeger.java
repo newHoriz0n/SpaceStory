@@ -10,7 +10,7 @@ import topview.pbLib.Koordinate3D;
 
 public class Traeger extends Koerper implements Zerstoerbares {
 
-	private double ausrichtung;
+	protected double ausrichtung;
 	private List<SystemBucht> systemBuchten;
 	private double maxHuelle;
 	private double aktHuelle;

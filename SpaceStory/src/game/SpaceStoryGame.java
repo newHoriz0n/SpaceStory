@@ -11,10 +11,11 @@ public class SpaceStoryGame extends TopViewGame {
 	private Welt welt;
 
 	public SpaceStoryGame() {
-		super();
 
+		super();
 		this.welt = new Welt();
 
+		startGame();
 	}
 
 	public static void main(String[] args) {
@@ -25,8 +26,7 @@ public class SpaceStoryGame extends TopViewGame {
 
 	@Override
 	public void update(long frameDauer) {
-		// TODO Auto-generated method stub
-
+		welt.updateWelt(frameDauer);
 	}
 
 	@Override

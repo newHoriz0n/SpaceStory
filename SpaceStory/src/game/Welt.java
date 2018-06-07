@@ -16,12 +16,11 @@ public class Welt {
 
 		objekte = new ArrayList<>();
 
-		objekte.add(SchiffDB.createSchiffVonPrototyp(ESchiffTyp.Bomber, new Koordinate3D(), Color.GREEN));
+		objekte.add(SchiffDB.createSchiffVonPrototyp(ESchiffTyp.Kreuzer, new Koordinate3D(), Color.GREEN));
 
 	}
 
 	public void updateWelt(long frameDauer) {
-
 		for (WeltObjekt w : objekte) {
 			w.update(frameDauer);
 		}

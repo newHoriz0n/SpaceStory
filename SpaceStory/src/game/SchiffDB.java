@@ -46,7 +46,7 @@ public class SchiffDB {
 		buchten.add(new Schild(2, 2, Math.PI/2));
 		buchten.add(new Schild(2, 2, -Math.PI/2));
 
-		SchiffPrototyp sp = new SchiffPrototyp("Bomber", buchten, 5000, 0.5, 50, 2500);
+		SchiffPrototyp sp = new SchiffPrototyp("Bomber", buchten, 5000, 1500, 50, 2500);
 
 		prototypen2.put(ESchiffTyp.Bomber, sp);	
 	}
@@ -65,7 +65,7 @@ public class SchiffDB {
 		buchten.add(new Schild(2, 2, Math.PI/2));
 		buchten.add(new Schild(2, 2, -Math.PI/2));
 
-		SchiffPrototyp sp = new SchiffPrototyp("Kreuzer", buchten, 500, 0.5, 25, 500);
+		SchiffPrototyp sp = new SchiffPrototyp("Kreuzer", buchten, 500, 500, 25, 500);
 
 		prototypen2.put(ESchiffTyp.Kreuzer, sp);	
 	}
@@ -83,7 +83,7 @@ public class SchiffDB {
 		buchten.add(new Schild(1, 1, Math.PI - 1));
 		buchten.add(new Schild(1, 1, Math.PI + 1));
 
-		SchiffPrototyp sp = new SchiffPrototyp("Jäger", buchten, 100, 0.5, 15, 100);
+		SchiffPrototyp sp = new SchiffPrototyp("Jäger", buchten, 100, 350, 15, 100);
 
 		prototypen.put(ESchiffTyp.Jaeger, sp);
 

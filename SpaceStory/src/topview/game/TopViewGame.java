@@ -14,9 +14,19 @@ public abstract class TopViewGame {
 	protected double spielerX;
 	protected double spielerY;
 
+	TopViewUpdateThread tvut = new TopViewUpdateThread();
+	
 	public TopViewGame() {
 		this.mausRichtung = 0;
-		this.keys = new boolean[256];
+		this.keys = new boolean[256];	
+	}
+	
+	
+	/**
+	 * Startet den UpdateThread
+	 */
+	public void startGame() {
+		tvut.start();
 	}
 
 	public abstract void update(long frameDauer);

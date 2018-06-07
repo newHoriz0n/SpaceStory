@@ -7,9 +7,9 @@ import topview.pbLib.Koordinate3D;
 
 public abstract class Koerper extends WeltObjekt {
 
-	private Koordinate3D speed;
+	private Koordinate3D speed;		// in pixel pro Sekunde
 	protected double radius;
-	private double masse;
+	protected double masse;
 	protected Color farbe;
 
 	public Koerper(double masse, double radius, Koordinate3D position, Color farbe) {
@@ -17,6 +17,7 @@ public abstract class Koerper extends WeltObjekt {
 		this.masse = masse;
 		this.radius = radius;
 		this.farbe = farbe;
+		this.speed = new Koordinate3D();
 	}
 
 	public boolean checkKollision(Koerper k2) {
@@ -29,7 +30,9 @@ public abstract class Koerper extends WeltObjekt {
 
 	@Override
 	public void update(long frameDauer) {
-		// TODO: Update Körper
+		Koordinate3D frameSpeed = new Koordinate3D(speed);
+		frameSpeed.scale(frameDauer / 1000.0);
+		position.add(frameSpeed);
 	}
 
 }
