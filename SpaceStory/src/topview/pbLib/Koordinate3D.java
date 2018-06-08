@@ -122,6 +122,12 @@ public class Koordinate3D {
 		this.z = neuePos.getZ();
 	}
 
+	public void setKoordinaten(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
 	public void normieren() {
 		double laenge = getVektorLaenge();
 		this.x = x / laenge;
@@ -164,7 +170,5 @@ public class Koordinate3D {
 			return false;
 		return true;
 	}
-	
-	
 
 }
