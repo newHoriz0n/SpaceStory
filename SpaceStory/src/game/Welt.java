@@ -2,13 +2,8 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import spacefight.Schuss;
 import spacefight.WeltObjekt;
@@ -33,7 +28,9 @@ public class Welt {
 
 		objekte.add(SchiffDB.createSchiffVonPrototyp(ESchiffTyp.Bomber, new Koordinate3D(), Color.GREEN));
 
-		weltall = new Hintergrund(1, -2000, -2000, "gfx/hintergrund/weltraum1.jpg");
+		weltall = new Hintergrund();
+		weltall.addHintergrundBild(1, -2000, -2000, "gfx/hintergrund/weltraum1.jpg");	
+		
 	}
 
 	public void updateWelt(long frameDauer) {
@@ -65,7 +62,12 @@ public class Welt {
 			w.draw(g2d);
 		}
 		for (Schuss s : schuesse) {
-			s.draw(g2d);
+			try {
+				s.draw(g2d);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -74,7 +76,7 @@ public class Welt {
 	}
 
 	public void drawHintergrund(Graphics2D g2d, int centerX, int centerY) {
-		weltall.drawHintegrund(g2d, getSpieler().getPosition().getX(), getSpieler().getPosition().getY(), centerX,
+		weltall.drawHintergrund(g2d, getSpieler().getPosition().getX(), getSpieler().getPosition().getY(), centerX,
 				centerY);
 	}
 
