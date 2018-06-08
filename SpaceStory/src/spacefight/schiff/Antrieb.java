@@ -8,7 +8,7 @@ public class Antrieb extends SystemBucht {
 	}
 
 	public double getAntriebsKraft() {
-		return Math.pow(2, 3);
+		return Math.pow(aktStufe, 2) * 10;
 	}
 
 }

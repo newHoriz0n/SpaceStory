@@ -21,12 +21,17 @@ public abstract class Koerper extends WeltObjekt {
 	}
 
 	public boolean checkKollision(Koerper k2) {
-		double dist = Koordinate3D.getDistance(position.getX(), position.getY(), k2.position.getX(), k2.position.getY());
+		double dist = Koordinate3D.getDistance(position.getX(), position.getY(), k2.position.getX(),
+				k2.position.getY());
 		return dist < radius + k2.radius;
 	}
 
 	public void setSpeed(Koordinate3D speed) {
 		this.speed = speed;
+	}
+
+	public Koordinate3D getSpeed() {
+		return speed;
 	}
 
 	@Override

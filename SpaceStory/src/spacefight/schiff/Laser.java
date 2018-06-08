@@ -77,8 +77,11 @@ public class Laser extends SystemBucht {
 
 		double richtung = differenz.getXYVektorRichtung();			// Absolute Richtung des Schusses
 		
+		Koordinate3D schussSpeed = new Koordinate3D(richtung, calcLaserSpeed());
+		schussSpeed.add(traeger.getSpeed());
+		
 		if (Math.cos(richtung - absRichtung) > 0) {
-			neuerSchuss = new Schuss(schaden, aktStufe, absEigenpos, new Koordinate3D(richtung, calcLaserSpeed()), Color.RED);
+			neuerSchuss = new Schuss(schaden, aktStufe, absEigenpos, schussSpeed, Color.RED);
 		}
 	}
 

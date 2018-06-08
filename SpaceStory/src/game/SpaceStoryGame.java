@@ -36,6 +36,11 @@ public class SpaceStoryGame extends TopViewGame {
 	}
 
 	@Override
+	protected void drawHintergrund(Graphics2D g2d, int centerX, int centerY) {
+		welt.drawHintergrund(g2d, centerX, centerY);
+	}
+
+	@Override
 	protected void drawWelt(Graphics2D g2d) {
 		welt.drawWelt(g2d);
 	}
@@ -76,12 +81,13 @@ public class SpaceStoryGame extends TopViewGame {
 	public void handleKeyInputs(boolean[] keys) {
 		if (keys[87]) {
 			// vorwärts
-
+			spieler.beschleunigen();
 		} else if (keys[83]) {
 			// rückwärts
+			spieler.bremsen();
 		} else {
-			// stoppen
-
+			// gleiten
+			spieler.gleiten();
 		}
 
 		if (keys[65]) {

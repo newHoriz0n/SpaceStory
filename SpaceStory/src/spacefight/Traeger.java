@@ -68,4 +68,5 @@ public class Traeger extends Koerper implements Zerstoerbares {
 		return teamFarbe;
 	}
 
+
 }

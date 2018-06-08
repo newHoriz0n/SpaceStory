@@ -1,4 +1,4 @@
-package game;
+package spacefight.schiff;
 
 public enum ESchiffTyp {
 

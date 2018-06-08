@@ -8,17 +8,16 @@ public abstract class TopViewGame {
 
 	@SuppressWarnings("unused")
 	private double mausRichtung;
-	
+
 	protected double spielerX;
 	protected double spielerY;
 
 	TopViewUpdateThread tvut = new TopViewUpdateThread();
-	
+
 	public TopViewGame() {
 		this.mausRichtung = 0;
 	}
-	
-	
+
 	/**
 	 * Startet den UpdateThread
 	 */
@@ -29,12 +28,13 @@ public abstract class TopViewGame {
 	public abstract void update(long frameDauer);
 
 	public void draw(Graphics2D g2d, int width, int height, int centerX, int centerY) {
-		
+
 		setSpielerPosition();
-		
+
 		drawHUD(g2d, width, height);
 
-		g2d.setClip(0, 40, width, height - 40);
+		drawHintergrund(g2d, centerX, centerY);
+
 		AffineTransform af = new AffineTransform();
 		af.translate(centerX - spielerX, centerY - spielerY);
 		g2d.transform(af);
@@ -50,6 +50,8 @@ public abstract class TopViewGame {
 	public abstract void setSpielerPosition();
 
 	protected abstract void drawWelt(Graphics2D g2d);
+
+	protected abstract void drawHintergrund(Graphics2D g2d, int centerX, int centerY);
 
 	protected abstract void drawHUD(Graphics2D g2d, int width, int height);
 
@@ -87,7 +89,8 @@ public abstract class TopViewGame {
 
 	public abstract void handleKeyInputs(boolean[] keys);
 
-	public abstract void handleMouseRelease(List<Integer> dragXs, List<Integer> dragYs, int taste, long linkeDrueckzeit);
+	public abstract void handleMouseRelease(List<Integer> dragXs, List<Integer> dragYs, int taste,
+			long linkeDrueckzeit);
 
 	public abstract void handleMouseWheelAktion(int i);
 

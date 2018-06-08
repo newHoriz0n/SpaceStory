@@ -1,16 +1,10 @@
-package game;
+package spacefight.schiff;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import spacefight.schiff.Antrieb;
-import spacefight.schiff.Laser;
-import spacefight.schiff.Schiff;
-import spacefight.schiff.Schild;
-import spacefight.schiff.Steuerung;
-import spacefight.schiff.SystemBucht;
 import topview.pbLib.Koordinate3D;
 
 public class SchiffDB {

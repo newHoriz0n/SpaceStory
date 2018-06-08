@@ -1,8 +1,6 @@
-package game;
+package spacefight.schiff;
 
 import java.util.List;
-
-import spacefight.schiff.SystemBucht;
 
 public class SchiffPrototyp {
 

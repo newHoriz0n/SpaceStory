@@ -12,15 +12,19 @@ public class Schiff extends Traeger {
 	private boolean autoPilot;
 	private double zielAusrichtung;
 	private double lenkRichtung;
+	private double aktSchub;
 
 	private String bezeichnung;
 	private double wendigkeit;
+	private double beschleunigung;
+	private double radSpeed;
 
 	private double rotSpeed; // rad pro Sekunde
 
 	private List<Laser> lasers;
 
-	public Schiff(Koordinate3D position, String bezeichnung, double radius, double huelle, double masse, List<SystemBucht> buchten, Color teamFarbe) {
+	public Schiff(Koordinate3D position, String bezeichnung, double radius, double huelle, double masse,
+			List<SystemBucht> buchten, Color teamFarbe) {
 		super(position, radius, buchten, huelle, masse, Color.GRAY, teamFarbe);
 
 		this.bezeichnung = bezeichnung;
@@ -30,7 +34,7 @@ public class Schiff extends Traeger {
 		this.lenkRichtung = 0;
 
 		calcWendigkeit();
-
+		calcAntriebskraft();
 		ladeWaffen();
 
 	}
@@ -51,13 +55,18 @@ public class Schiff extends Traeger {
 	public void update(long frameDauer) {
 
 		calcAusrichtung(frameDauer);
+		calcSpeed(frameDauer);
 		super.update(frameDauer);
+	}
+
+	private void calcSpeed(long frameDauer) {
+		radSpeed += aktSchub * beschleunigung * (frameDauer / 1000.0);
+		setSpeed(new Koordinate3D(ausrichtung, radSpeed));
 	}
 
 	/**
 	 * 
-	 * @param richtung
-	 *            in rad
+	 * @param richtung in rad
 	 */
 	public void setZielAusrichtung(double richtung) {
 		this.zielAusrichtung = richtung;
@@ -65,6 +74,18 @@ public class Schiff extends Traeger {
 
 	public void steuern(double richtung) {
 		this.lenkRichtung = richtung;
+	}
+
+	private void calcAntriebskraft() {
+		double aktBeschl = 0;
+
+		for (SystemBucht s : systemBuchten) {
+			if (s.getSystemTyp().equals(ESystemTyp.Antrieb)) {
+				aktBeschl += ((Antrieb) s).getAntriebsKraft();
+			}
+		}
+
+		beschleunigung = aktBeschl / masse;
 	}
 
 	public void calcWendigkeit() {
@@ -82,17 +103,20 @@ public class Schiff extends Traeger {
 	}
 
 	public void beschleunigen() {
-		// TODO: beschleunigen
+		this.aktSchub = 1.0;
 	}
 
 	public void bremsen() {
-		// TODO: bremsen
+		this.aktSchub = -1.0;
+	}
+
+	public void gleiten() {
+		this.aktSchub = 0;
 	}
 
 	/**
 	 * 
-	 * @param richtung:
-	 *            Genordete Richtung zur Zielausrichtung
+	 * @param richtung: Genordete Richtung zur Zielausrichtung
 	 */
 	private void calcAusrichtung(long frameDauer) {
 
@@ -105,7 +129,8 @@ public class Schiff extends Traeger {
 				rotSpeed = 0;
 				ausrichtung = zielAusrichtung;
 			} else {
-				if (Math.abs(differenz) - (0 * wendigkeit * zeitAnteil) > ((rotSpeed * rotSpeed) / (2 * wahreWendigkeit))) {
+				if (Math.abs(differenz)
+						- (0 * wendigkeit * zeitAnteil) > ((rotSpeed * rotSpeed) / (2 * wahreWendigkeit))) {
 					rotSpeed += wahreWendigkeit * zeitAnteil * Math.signum(differenz);
 				} else {
 					rotSpeed -= wahreWendigkeit * zeitAnteil * Math.signum(differenz);

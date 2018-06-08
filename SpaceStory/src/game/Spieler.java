@@ -31,4 +31,18 @@ public class Spieler {
 		schiff.schiesseAufPosition(x, y);
 	}
 
+	public void beschleunigen() {
+		schiff.beschleunigen();
+	}
+
+	public void bremsen() {
+		schiff.bremsen();
+	}
+
+	public void gleiten() {
+		schiff.gleiten();
+	}
+
+	
+	
 }
