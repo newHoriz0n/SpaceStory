@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import spacefight.schiff.systeme.Antrieb;
+import spacefight.schiff.systeme.Laser;
+import spacefight.schiff.systeme.Schild;
+import spacefight.schiff.systeme.Steuerung;
+import spacefight.schiff.systeme.SystemBucht;
 import topview.pbLib.Koordinate3D;
 
 public class SchiffDB {
@@ -40,7 +45,7 @@ public class SchiffDB {
 		buchten.add(new Schild(2, 2, Math.PI / 2));
 		buchten.add(new Schild(2, 2, -Math.PI / 2));
 
-		SchiffPrototyp sp = new SchiffPrototyp("Bomber", buchten, 10, 50, 2500);
+		SchiffPrototyp sp = new SchiffPrototyp("Bomber", buchten, 10, 50, 100000, "gfx/schiffe/jaeger.png");
 
 		prototypen2.put(ESchiffTyp.Bomber, sp);
 	}
@@ -49,17 +54,15 @@ public class SchiffDB {
 		List<SystemBucht> buchten = new ArrayList<>();
 
 		buchten.add(new Steuerung(3, 3, 0));
-		buchten.add(new Antrieb(2, 3, Math.PI));
-		buchten.add(new Antrieb(2, 3, Math.PI - 0.5));
-		buchten.add(new Antrieb(2, 3, Math.PI + 0.5));
+		buchten.add(new Antrieb(3, 3, Math.PI - 0.5));
+		buchten.add(new Antrieb(3, 3, Math.PI + 0.5));
 		buchten.add(new Laser(2, 3, 1));
 		buchten.add(new Laser(2, 3, -1));
 		buchten.add(new Laser(2, 2, Math.PI - 1));
 		buchten.add(new Laser(2, 2, Math.PI + 1));
-		buchten.add(new Schild(2, 2, Math.PI / 2));
-		buchten.add(new Schild(2, 2, -Math.PI / 2));
+		buchten.add(new Schild(2, 2, Math.PI));
 
-		SchiffPrototyp sp = new SchiffPrototyp("Kreuzer", buchten, 3, 25, 500);
+		SchiffPrototyp sp = new SchiffPrototyp("Kreuzer", buchten, 3, 25, 25000, "gfx/schiffe/jaeger.png");
 
 		prototypen2.put(ESchiffTyp.Kreuzer, sp);
 	}
@@ -77,7 +80,7 @@ public class SchiffDB {
 		buchten.add(new Schild(1, 1, Math.PI - 1));
 		buchten.add(new Schild(1, 1, Math.PI + 1));
 
-		SchiffPrototyp sp = new SchiffPrototyp("Jäger", buchten, 0.8, 15, 100);
+		SchiffPrototyp sp = new SchiffPrototyp("Jäger", buchten, 0.8, 15, 10000, "gfx/schiffe/jaeger.png");
 
 		prototypen.put(ESchiffTyp.Jaeger, sp);
 
@@ -87,7 +90,7 @@ public class SchiffDB {
 
 		if (prototypen.containsKey(typ)) {
 			return new Schiff(position, prototypen.get(typ).getBezeichnung(), prototypen.get(typ).getRadius(), prototypen.get(typ).getHuelle(),
-					prototypen.get(typ).getMasse(), prototypen.get(typ).getBuchten(), teamFarbe);
+					prototypen.get(typ).getMasse(), prototypen.get(typ).getBuchten(), teamFarbe, prototypen.get(typ).getBild());
 		} else {
 			throw new IllegalArgumentException();
 		}

@@ -1,4 +1,4 @@
-package spacefight.schiff;
+package spacefight.schiff.systeme;
 
 public enum ESystemTyp {
 

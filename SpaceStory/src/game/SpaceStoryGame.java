@@ -42,7 +42,12 @@ public class SpaceStoryGame extends TopViewGame {
 
 	@Override
 	protected void drawWelt(Graphics2D g2d) {
-		welt.drawWelt(g2d);
+		try {
+			welt.drawWelt(g2d);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

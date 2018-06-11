@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import topview.pbLib.Koordinate3D;
+import topview.welt.Koerper;
 
 public class Schuss extends Koerper {
 
@@ -41,5 +42,12 @@ public class Schuss extends Koerper {
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(farbe);
 		g2d.fillOval((int) (position.getIntX() - radius), (int) (position.getIntY() - radius), (int) (2 * radius), (int) (2 * radius));
+	}
+
+	public boolean isScharf() {
+		if (System.currentTimeMillis() - startZeit > 100) {
+			return true;
+		}
+		return false;
 	}
 }

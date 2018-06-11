@@ -1,4 +1,4 @@
-package topview.pbLib.collision;
+package topview.welt.collision;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ public interface Collidable {
 	public Koordinate3D getPosition();
 	
 	public Koordinate3D getSpeed();
+	
+	public void setSpeedNachKollision(Koordinate3D neueSpeed);
 
 	public double getRadius();
 
 	public double getMasse();
-
-	public int getTeam();
 	
 	public boolean isFixiert();
 	
@@ -27,5 +27,7 @@ public interface Collidable {
 	 * @param teile
 	 */
 	public void getCollidableTeile(List<Collidable> cTeile);
+	
+	public boolean equals(Object o);
 
 }

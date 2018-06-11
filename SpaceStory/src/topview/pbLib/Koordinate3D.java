@@ -171,4 +171,10 @@ public class Koordinate3D {
 		return true;
 	}
 
+	public void substract(Koordinate3D koord) {
+		this.x -= koord.getX();
+		this.y -= koord.getY();
+		this.z -= koord.getZ();
+	}
+
 }

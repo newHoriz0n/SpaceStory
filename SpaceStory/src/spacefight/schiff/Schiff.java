@@ -1,10 +1,15 @@
 package spacefight.schiff;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import spacefight.Traeger;
+import spacefight.schiff.systeme.Antrieb;
+import spacefight.schiff.systeme.Laser;
+import spacefight.schiff.systeme.SystemBucht;
 import topview.pbLib.Koordinate3D;
 
 public class Schiff extends Traeger {
@@ -15,17 +20,18 @@ public class Schiff extends Traeger {
 	private double aktSchub;
 
 	private String bezeichnung;
-	private double wendigkeit;
-	private double beschleunigung;
 	private double radSpeed;
 
 	private double rotSpeed; // rad pro Sekunde
 
-	private List<Laser> lasers;
+	private Koordinate3D kollisionsSpeed;
+	private double kollisionSpeedAnteil;
 
-	public Schiff(Koordinate3D position, String bezeichnung, double radius, double huelle, double masse,
-			List<SystemBucht> buchten, Color teamFarbe) {
-		super(position, radius, buchten, huelle, masse, Color.GRAY, teamFarbe);
+	private BufferedImage bild;
+
+	public Schiff(Koordinate3D position, String bezeichnung, double radius, double huelle, double masse, List<SystemBucht> buchten, Color teamFarbe,
+			BufferedImage bild) {
+		super(position, radius, buchten, huelle, masse, new Color(0, 0, 0, 0), teamFarbe);
 
 		this.bezeichnung = bezeichnung;
 		this.zielAusrichtung = 2.0;
@@ -33,21 +39,10 @@ public class Schiff extends Traeger {
 		this.autoPilot = false;
 		this.lenkRichtung = 0;
 
-		calcWendigkeit();
-		calcAntriebskraft();
-		ladeWaffen();
+		this.kollisionsSpeed = new Koordinate3D();
+		this.kollisionSpeedAnteil = 0;
 
-	}
-
-	private void ladeWaffen() {
-
-		this.lasers = new ArrayList<>();
-
-		for (SystemBucht s : systemBuchten) {
-			if (s.getSystemTyp().equals(ESystemTyp.Laser)) {
-				lasers.add((Laser) s);
-			}
-		}
+		this.bild = bild;
 
 	}
 
@@ -56,17 +51,24 @@ public class Schiff extends Traeger {
 
 		calcAusrichtung(frameDauer);
 		calcSpeed(frameDauer);
+
 		super.update(frameDauer);
+
+		kollisionSpeedAnteil *= Math.pow(0.97, frameDauer / 1000.0);
 	}
 
 	private void calcSpeed(long frameDauer) {
 		radSpeed += aktSchub * beschleunigung * (frameDauer / 1000.0);
-		setSpeed(new Koordinate3D(ausrichtung, radSpeed));
+		Koordinate3D newSpeed = new Koordinate3D(ausrichtung, radSpeed);
+		kollisionsSpeed.scale(kollisionSpeedAnteil);
+		newSpeed.add(kollisionsSpeed);
+		setSpeed(newSpeed);
 	}
 
 	/**
 	 * 
-	 * @param richtung in rad
+	 * @param richtung
+	 *            in rad
 	 */
 	public void setZielAusrichtung(double richtung) {
 		this.zielAusrichtung = richtung;
@@ -74,32 +76,6 @@ public class Schiff extends Traeger {
 
 	public void steuern(double richtung) {
 		this.lenkRichtung = richtung;
-	}
-
-	private void calcAntriebskraft() {
-		double aktBeschl = 0;
-
-		for (SystemBucht s : systemBuchten) {
-			if (s.getSystemTyp().equals(ESystemTyp.Antrieb)) {
-				aktBeschl += ((Antrieb) s).getAntriebsKraft();
-			}
-		}
-
-		beschleunigung = aktBeschl / masse;
-	}
-
-	public void calcWendigkeit() {
-
-		double aktWend = 0;
-
-		for (SystemBucht s : systemBuchten) {
-			if (s.getSystemTyp().equals(ESystemTyp.Steuerung)) {
-				aktWend += ((Steuerung) s).getSteuerKraft();
-			}
-		}
-
-		wendigkeit = aktWend;
-
 	}
 
 	public void beschleunigen() {
@@ -116,7 +92,8 @@ public class Schiff extends Traeger {
 
 	/**
 	 * 
-	 * @param richtung: Genordete Richtung zur Zielausrichtung
+	 * @param richtung:
+	 *            Genordete Richtung zur Zielausrichtung
 	 */
 	private void calcAusrichtung(long frameDauer) {
 
@@ -129,8 +106,7 @@ public class Schiff extends Traeger {
 				rotSpeed = 0;
 				ausrichtung = zielAusrichtung;
 			} else {
-				if (Math.abs(differenz)
-						- (0 * wendigkeit * zeitAnteil) > ((rotSpeed * rotSpeed) / (2 * wahreWendigkeit))) {
+				if (Math.abs(differenz) - (0 * wendigkeit * zeitAnteil) > ((rotSpeed * rotSpeed) / (2 * wahreWendigkeit))) {
 					rotSpeed += wahreWendigkeit * zeitAnteil * Math.signum(differenz);
 				} else {
 					rotSpeed -= wahreWendigkeit * zeitAnteil * Math.signum(differenz);
@@ -164,4 +140,32 @@ public class Schiff extends Traeger {
 	public List<Laser> getLaser() {
 		return lasers;
 	}
+
+	public List<Antrieb> getAntriebe() {
+		return antriebe;
+	}
+
+	@Override
+	public boolean isFixiert() {
+		return false;
+	}
+
+	@Override
+	public void draw(Graphics2D g2d) {
+
+		AffineTransform at = new AffineTransform();
+		at.translate(position.getX() - radius, position.getY() - radius);
+		at.rotate(-ausrichtung, radius, radius);
+		g2d.drawImage(bild, at, null);
+		
+		super.draw(g2d);
+	}
+
+	@Override
+	public void setSpeedNachKollision(Koordinate3D neuePos) {
+		kollisionSpeedAnteil = 1;
+		neuePos.substract(speed);
+		kollisionsSpeed.setPosition(neuePos);
+	}
+
 }

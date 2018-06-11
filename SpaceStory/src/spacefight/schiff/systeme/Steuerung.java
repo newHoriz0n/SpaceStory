@@ -1,4 +1,4 @@
-package spacefight.schiff;
+package spacefight.schiff.systeme;
 
 public class Steuerung extends SystemBucht {
 
@@ -9,6 +9,11 @@ public class Steuerung extends SystemBucht {
 
 	public double getSteuerKraft() {
 		return Math.pow(1.5, aktStufe);
+	}
+
+	@Override
+	public void update(long frameDauer) {
+		super.update(frameDauer);
 	}
 
 }
