@@ -27,6 +27,7 @@ public class Hintergrund {
 		}
 	}
 	
+	
 	class HintergrundBild {
 		
 		private double abstand;
